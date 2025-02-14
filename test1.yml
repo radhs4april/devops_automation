@@ -1,0 +1,42 @@
+---
+- name: install Apache Web-Server
+  hosts: all
+  vars_prompt:
+    - name: value
+      prompt:
+        - To install httpd type one?
+        - To install vsftpd type two?
+        - To install vsftpd type int two?
+      private: no
+  vars:
+    pkg1: httpd
+    pkg2: vsftpd
+    pkg3: ntp
+  tasks:
+    - name: Install Apache on CentOS  Server
+      yum: pkg={{ pkg1 }} state=latest
+      when: value  == "one"
+
+    - name: Install vsftpd on CentOS Server
+      yum: pkg={{ pkg2 }} state=latest
+      when: value == "two"
+
+    - name: Install vsftpd on CentOS Server
+      yum: pkg={{ pkg2 }} state=latest
+      when: value|int == 2
+
+    - name: Install ntp on centos  Server
+      yum: pkg={{ pkg3 }} state=latest
+      when: ansible_os_family == "RedHat" and ansible_distribution_version == "8" or ansible_distribution_version == "6"
+
+    - name: Install telnet package
+      yum: pkg=telnet state=latest
+      when: ansible_os_family == "RedHat" or ansible_distribution_version == "6" 
+
+    # ==, != --> Pointing not equal 
+    #  >
+    # <
+    # >= 
+    # <=
+    #  and /or logical operation
+    # true / false - bool operations 
